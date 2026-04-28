@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TrapsController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const traps_service_1 = require("./traps.service");
 const alerts_service_1 = require("../alerts/alerts.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
@@ -50,6 +51,9 @@ let TrapsController = class TrapsController {
 exports.TrapsController = TrapsController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Listar todas las trampas del agricultor' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de trampas obtenida exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -57,6 +61,11 @@ __decorate([
 ], TrapsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener detalle de una trampa con sus alertas' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID de la trampa' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Detalle de trampa obtenido exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Trampa no encontrada' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
@@ -65,6 +74,9 @@ __decorate([
 ], TrapsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Crear nueva trampa' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Trampa creada exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
     __param(0, (0, common_1.Request)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -73,6 +85,11 @@ __decorate([
 ], TrapsController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar trampa' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID de la trampa' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Trampa actualizada exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Trampa no encontrada' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Request)()),
     __param(2, (0, common_1.Body)()),
@@ -82,6 +99,11 @@ __decorate([
 ], TrapsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Eliminar trampa' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID de la trampa' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Trampa eliminada exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Trampa no encontrada' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
@@ -89,8 +111,10 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TrapsController.prototype, "delete", null);
 exports.TrapsController = TrapsController = __decorate([
+    (0, swagger_1.ApiTags)('traps'),
     (0, common_1.Controller)('traps'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     __metadata("design:paramtypes", [traps_service_1.TrapsService,
         alerts_service_1.AlertsService])
 ], TrapsController);

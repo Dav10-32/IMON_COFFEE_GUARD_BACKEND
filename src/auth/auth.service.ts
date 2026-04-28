@@ -28,10 +28,10 @@ export class AuthService {
       email: dto.email.toLowerCase(),
       password: hashedPassword,
       farmName: dto.farmName,
-      municipality: dto.municipality || '',
-      department: dto.department || '',
-      hectares: 0,
-      cooperative: null,
+      municipality: dto.municipality,
+      department: dto.department,
+      hectares: dto.hectares,
+      cooperative: dto.cooperative || null,
     });
 
     // Generate token
@@ -40,7 +40,7 @@ export class AuthService {
     return {
       access_token: token,
       farmer: {
-        id: farmer._id,
+        id: farmer._id.toString(),
         name: farmer.name,
         email: farmer.email,
         farmName: farmer.farmName,
@@ -64,7 +64,7 @@ export class AuthService {
     return {
       access_token: token,
       farmer: {
-        id: farmer._id,
+        id: farmer._id.toString(),
         name: farmer.name,
         email: farmer.email,
         farmName: farmer.farmName,

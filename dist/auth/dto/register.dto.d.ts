@@ -3,6 +3,8 @@ export declare class RegisterDto {
     email: string;
     password: string;
     farmName: string;
-    municipality?: string;
-    department?: string;
+    municipality: string;
+    department: string;
+    hectares: number;
+    cooperative?: string;
 }

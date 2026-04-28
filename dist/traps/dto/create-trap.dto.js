@@ -11,17 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateTrapDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class CreateTrapDto {
     name;
     location;
 }
 exports.CreateTrapDto = CreateTrapDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Trampa N°4', description: 'Nombre identificador de la trampa' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)({ message: 'El nombre de la trampa es obligatorio' }),
     __metadata("design:type", String)
 ], CreateTrapDto.prototype, "name", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Lote Alto - Cerca del tanque', description: 'Ubicación de la trampa en la finca' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)({ message: 'La ubicación es obligatoria' }),
     __metadata("design:type", String)

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Trap, TrapDocument } from './schemas/trap.schema';
+import { Alert, AlertDocument } from '../alerts/schemas/alert.schema';
 import { CreateTrapDto } from './dto/create-trap.dto';
 import { UpdateTrapDto } from './dto/update-trap.dto';
 
@@ -9,6 +10,7 @@ import { UpdateTrapDto } from './dto/update-trap.dto';
 export class TrapsService {
   constructor(
     @InjectModel(Trap.name) private trapModel: Model<TrapDocument>,
+    @InjectModel(Alert.name) private alertModel: Model<AlertDocument>,
   ) {}
 
   async findAllByFarmer(farmerId: string): Promise<TrapDocument[]> {
@@ -56,5 +58,44 @@ export class TrapsService {
       status: { $in: ['active', 'alert'] },
     });
     return { total, active };
+  }
+
+  async simulateDetection(trapId: string, farmerId: string, level: 'low' | 'medium' | 'high'): Promise<{ trap: TrapDocument; alert: AlertDocument }> {
+    const trap = await this.findById(trapId, farmerId);
+
+    // Update trap status
+    trap.status = level === 'high' ? 'alert' : 'active';
+    trap.lastDetection = 'Hace unos segundos';
+    
+    // Update weekly activity (increment last day)
+    const activity = [...trap.weeklyActivity];
+    activity[6] = (activity[6] || 0) + (level === 'high' ? 3 : level === 'medium' ? 2 : 1);
+    trap.weeklyActivity = activity;
+    
+    await trap.save();
+
+    // Create alert
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+    const messages = {
+      high: `¡Atención! Tu trampa ${trap.name} detectó actividad alta de broca. Te recomendamos revisar el cultivo en esa zona inmediatamente.`,
+      medium: `Tu trampa ${trap.name} detectó actividad moderada de broca. Mantén monitoreo constante en esa zona.`,
+      low: `Tu trampa ${trap.name} detectó 1 broca. Nivel bajo, mantener monitoreo.`,
+    };
+
+    const alert = await this.alertModel.create({
+      trapId: trap._id,
+      farmerId: new Types.ObjectId(farmerId),
+      trapName: trap.name,
+      date: dateStr,
+      time: timeStr,
+      level: level,
+      message: messages[level],
+      read: false,
+    });
+
+    return { trap, alert };
   }
 }

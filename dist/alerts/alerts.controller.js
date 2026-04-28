@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AlertsController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const alerts_service_1 = require("./alerts.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let AlertsController = class AlertsController {
@@ -31,6 +32,9 @@ let AlertsController = class AlertsController {
 exports.AlertsController = AlertsController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Listar todas las alertas del agricultor' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de alertas obtenida exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -38,6 +42,11 @@ __decorate([
 ], AlertsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Patch)(':id/read'),
+    (0, swagger_1.ApiOperation)({ summary: 'Marcar alerta como leída' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'ID de la alerta' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Alerta marcada como leída' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Alerta no encontrada' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
@@ -45,8 +54,10 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AlertsController.prototype, "markAsRead", null);
 exports.AlertsController = AlertsController = __decorate([
+    (0, swagger_1.ApiTags)('alerts'),
     (0, common_1.Controller)('alerts'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     __metadata("design:paramtypes", [alerts_service_1.AlertsService])
 ], AlertsController);
 //# sourceMappingURL=alerts.controller.js.map

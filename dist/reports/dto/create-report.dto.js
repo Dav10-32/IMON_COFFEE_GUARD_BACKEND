@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateReportDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class CreateReportDto {
     trapId;
     trapName;
@@ -18,16 +19,19 @@ class CreateReportDto {
 }
 exports.CreateReportDto = CreateReportDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({ example: '507f1f77bcf86cd799439011', description: 'ID de la trampa' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateReportDto.prototype, "trapId", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Trampa N°2', description: 'Nombre de la trampa' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateReportDto.prototype, "trapName", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ example: 'La trampa no enciende', description: 'Descripción del problema' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)({ message: 'La descripción del problema es obligatoria' }),
     __metadata("design:type", String)

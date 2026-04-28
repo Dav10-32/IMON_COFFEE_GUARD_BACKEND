@@ -7,7 +7,7 @@ export declare class AuthController {
     register(dto: RegisterDto): Promise<{
         access_token: string;
         farmer: {
-            id: import("mongoose").Types.ObjectId;
+            id: string;
             name: string;
             email: string;
             farmName: string;
@@ -16,7 +16,7 @@ export declare class AuthController {
     login(dto: LoginDto): Promise<{
         access_token: string;
         farmer: {
-            id: import("mongoose").Types.ObjectId;
+            id: string;
             name: string;
             email: string;
             farmName: string;
